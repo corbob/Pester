@@ -840,11 +840,10 @@ function Write-NUnitTestCaseAttributes($TestResult, [System.Xml.XmlWriter] $XmlW
             $XmlWriter.WriteAttributeString('result', 'Ignored')
             $XmlWriter.WriteAttributeString('executed', 'False')
 
-            if ($TestResult.FailureMessage) {
-                $XmlWriter.WriteStartElement('reason')
-                $xmlWriter.WriteElementString('message', $TestResult.FailureMessage)
-                $XmlWriter.WriteEndElement() # Close reason tag
-            }
+            $result = Get-ErrorForXmlReport -TestResult $TestResult
+            $XmlWriter.WriteStartElement('reason')
+            $xmlWriter.WriteElementString('message', $result.FailureMessage)
+            $XmlWriter.WriteEndElement() # Close reason tag
 
             break
         }
