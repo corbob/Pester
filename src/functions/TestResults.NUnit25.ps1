@@ -317,10 +317,10 @@ function Write-NUnitTestCaseAttributes {
             $XmlWriter.WriteAttributeString('result', 'Ignored')
             $XmlWriter.WriteAttributeString('executed', 'False')
 
-            # TODO: This doesn't work, FailureMessage comes from Get-ErrorForXmlReport which isn't called
-            if ($TestResult.FailureMessage) {
+            $result = Get-ErrorForXmlReport -TestResult $TestResult
+            if ($result.FailureMessage -match [regex]::Escape('Exception: is skipped,')) {
                 $XmlWriter.WriteStartElement('reason')
-                $xmlWriter.WriteElementString('message', $TestResult.FailureMessage)
+                $xmlWriter.WriteElementString('message', $result.FailureMessage)
                 $XmlWriter.WriteEndElement() # Close reason tag
             }
 
@@ -331,10 +331,10 @@ function Write-NUnitTestCaseAttributes {
             $XmlWriter.WriteAttributeString('result', 'Inconclusive')
             $XmlWriter.WriteAttributeString('executed', 'True')
 
-            # TODO: This doesn't work, FailureMessage comes from Get-ErrorForXmlReport which isn't called
-            if ($TestResult.FailureMessage) {
+            $result = Get-ErrorForXmlReport -TestResult $TestResult
+            if ($result.FailureMessage -match [regex]::Escape('Exception: is inconclusive,')) {
                 $XmlWriter.WriteStartElement('reason')
-                $xmlWriter.WriteElementString('message', $TestResult.DisplayErrorMessage)
+                $xmlWriter.WriteElementString('message', $result.FailureMessage)
                 $XmlWriter.WriteEndElement() # Close reason tag
             }
 
