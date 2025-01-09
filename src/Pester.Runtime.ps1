@@ -166,7 +166,7 @@ function New-ParametrizedBlock {
         [HashTable] $FrameworkData = @{ },
         [Switch] $Focus,
         [Switch] $Skip,
-        [String] $SkipBecause,
+        [String] $Reason,
         $Data
     )
 
@@ -177,7 +177,7 @@ function New-ParametrizedBlock {
     foreach ($d in @($Data)) {
         # shallow clone to give every block it's own copy
         $fmwData = $FrameworkData.Clone()
-        New-Block -GroupId $groupId -Name $Name -ScriptBlock $ScriptBlock -StartLine $StartLine -Tag $Tag -FrameworkData $fmwData -Focus:$Focus -Skip:$Skip -SkipBecause:$SkipBecause -Data $d
+        New-Block -GroupId $groupId -Name $Name -ScriptBlock $ScriptBlock -StartLine $StartLine -Tag $Tag -FrameworkData $fmwData -Focus:$Focus -Skip:$Skip -Reason:$Reason -Data $d
     }
 }
 
@@ -195,7 +195,7 @@ function New-Block {
         [Switch] $Focus,
         [String] $GroupId,
         [Switch] $Skip,
-        [String] $SkipBecause,
+        [String] $Reason,
         $Data
     )
 
@@ -234,7 +234,7 @@ function New-Block {
     $block.Focus = $Focus
     $block.GroupId = $GroupId
     $block.Skip = $Skip
-    $block.SkipBecause = $SkipBecause
+    $block.Reason = $Reason
     $block.Data = $Data
 
     # we attach the current block to the parent, and put it to the parent
@@ -483,7 +483,7 @@ function New-Test {
         [String] $GroupId,
         [Switch] $Focus,
         [Switch] $Skip,
-        [String] $SkipBecause
+        [String] $Reason
     )
 
     if ($PesterPreference.Debug.WriteDebugMessages.Value) {
@@ -517,7 +517,7 @@ function New-Test {
     $test.Tag = $Tag
     $test.Focus = $Focus
     $test.Skip = $Skip
-    $test.SkipBecause = $SkipBecause
+    $test.Reason = $Reason
     $test.Data = $Data
     $test.FrameworkData.Runtime.Phase = 'Discovery'
 
@@ -692,7 +692,7 @@ function Invoke-TestItem {
                     }
                     else {
                         $Test.Skipped = $true
-                        $Test.SkipBecause = $result.ErrorRecord.Exception.Message
+                        $Test.Reason = $result.ErrorRecord.Exception.Message
                     }
                 }
                 else {
@@ -2126,7 +2126,7 @@ function PostProcess-DiscoveredBlock {
                         }
 
                         $t.Skip = $true
-                        $t.SkipBecause = $b.SkipBecause
+                        $t.Reason = $b.Reason
                     }
                 }
             }
@@ -2554,14 +2554,14 @@ function New-ParametrizedTest () {
         [object[]] $Data,
         [Switch] $Focus,
         [Switch] $Skip,
-        [String] $SkipBecause
+        [String] $Reason
     )
 
     # using the position of It as Id for the the test so we can join multiple testcases together, this should be unique enough because it only needs to be unique for the current block.
     # TODO: Id is used by NUnit2.5 and 3 testresults to group. A better way to solve this?
     $groupId = "${StartLine}:${StartColumn}"
     foreach ($d in $Data) {
-        New-Test -GroupId $groupId -Name $Name -Tag $Tag -ScriptBlock $ScriptBlock -StartLine $StartLine -Data $d -Focus:$Focus -Skip:$Skip -SkipBecause:$SkipBecause
+        New-Test -GroupId $groupId -Name $Name -Tag $Tag -ScriptBlock $ScriptBlock -StartLine $StartLine -Data $d -Focus:$Focus -Skip:$Skip -Reason:$Reason
     }
 }
 

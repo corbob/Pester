@@ -31,7 +31,7 @@ Describe 'All The Tests' {
 	}
 
 	Context 'It Reasons' {
-		It 'Skips' -Skip -SkipBecause 'I am Skipped' {
+		It 'Skips' -Skip -Reason 'I am Skipped' {
 			$true | Should -BeTrue
 		}
 	}
@@ -42,7 +42,7 @@ Describe 'All The Tests' {
 		}
 	}
 
-	Context 'Context Reasons' -Skip -SkipBecause 'I am Skipped' {
+	Context 'Context Reasons' -Skip -Reason 'I am Skipped' {
 		It 'Skips' {
 			$true | Should -BeTrue
 		}
@@ -54,7 +54,7 @@ Describe 'All The Tests' {
 		}
 	}
 
-	Describe 'Describe Reasons' -Skip -SkipBecause 'I am Skipped' {
+	Describe 'Describe Reasons' -Skip -Reason 'I am Skipped' {
 		It 'Skips' {
 			$true | Should -BeTrue
 		}

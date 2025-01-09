@@ -136,7 +136,7 @@
         [Switch] $AllowNullOrEmptyForEach,
 
         [Parameter(ParameterSetName = 'Skip')]
-        [String] $SkipBecause
+        [String] $Reason
 
         # [Switch]$Focus
     )
@@ -163,9 +163,9 @@
             return
         }
 
-        New-ParametrizedTest -Name $Name -ScriptBlock $Test -StartLine $MyInvocation.ScriptLineNumber -StartColumn $MyInvocation.OffsetInLine -Data $ForEach -Tag $Tag -Focus:$Focus -Skip:$Skip -SkipBecause:$SkipBecause
+        New-ParametrizedTest -Name $Name -ScriptBlock $Test -StartLine $MyInvocation.ScriptLineNumber -StartColumn $MyInvocation.OffsetInLine -Data $ForEach -Tag $Tag -Focus:$Focus -Skip:$Skip -Reason:$Reason
     }
     else {
-        New-Test -Name $Name -ScriptBlock $Test -StartLine $MyInvocation.ScriptLineNumber -Tag $Tag -Focus:$Focus -Skip:$Skip -SkipBecause:$SkipBecause
+        New-Test -Name $Name -ScriptBlock $Test -StartLine $MyInvocation.ScriptLineNumber -Tag $Tag -Focus:$Focus -Skip:$Skip -Reason:$Reason
     }
 }

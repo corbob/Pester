@@ -317,9 +317,9 @@ function Write-NUnitTestCaseAttributes {
             $XmlWriter.WriteAttributeString('result', 'Ignored')
             $XmlWriter.WriteAttributeString('executed', 'False')
 
-            if ($TestResult.SkipBecause) {
+            if ($TestResult.Reason) {
                 $XmlWriter.WriteStartElement('reason')
-                $xmlWriter.WriteElementString('message', $TestResult.SkipBecause)
+                $xmlWriter.WriteElementString('message', $TestResult.Reason)
                 $XmlWriter.WriteEndElement() # Close reason tag
             }
 
@@ -330,9 +330,9 @@ function Write-NUnitTestCaseAttributes {
             $XmlWriter.WriteAttributeString('result', 'Inconclusive')
             $XmlWriter.WriteAttributeString('executed', 'True')
 
-            if ($TestResult.SkipBecause) {
+            if ($TestResult.Reason) {
                 $XmlWriter.WriteStartElement('reason')
-                $xmlWriter.WriteElementString('message', $TestResult.SkipBecause)
+                $xmlWriter.WriteElementString('message', $TestResult.Reason)
                 $XmlWriter.WriteEndElement() # Close reason tag
             }
 
