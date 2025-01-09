@@ -1,9 +1,11 @@
 ﻿$pesterConfig = [PesterConfiguration]::Default
-$pesterConfig.TestResult
 $pesterConfig.TestResult.Enabled = $true
-$pesterConfig.TestResult.OutputFormat = 'NUnit2.5'
-$pesterConfig.TestResult.OutputPath = 'results.new.xml'
 $pesterConfig.Run.Path = '.\testing\mine.tests.ps1'
 $pesterConfig.Run.PassThru = $true
 $pesterConfig.Debug.WriteDebugMessages = $true
-$results = Invoke-Pester -Configuration $pesterConfig
+
+foreach ($fmt in 'NUnitXml NUnit2.5 NUnit3 JUnitXml'.split(' ')) {
+    $pesterConfig.TestResult.OutputFormat = $fmt
+    $pesterConfig.TestResult.OutputPath = "results.$fmt.xml"
+    Invoke-Pester -Configuration $pesterConfig
+}
