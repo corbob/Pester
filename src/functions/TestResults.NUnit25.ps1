@@ -317,10 +317,9 @@ function Write-NUnitTestCaseAttributes {
             $XmlWriter.WriteAttributeString('result', 'Ignored')
             $XmlWriter.WriteAttributeString('executed', 'False')
 
-            $result = Get-ErrorForXmlReport -TestResult $TestResult
-            if ($result.FailureMessage -match [regex]::Escape('Exception: is skipped,')) {
+            if ($TestResult.SkipBecause) {
                 $XmlWriter.WriteStartElement('reason')
-                $xmlWriter.WriteElementString('message', $result.FailureMessage)
+                $xmlWriter.WriteElementString('message', $TestResult.SkipBecause)
                 $XmlWriter.WriteEndElement() # Close reason tag
             }
 
@@ -331,10 +330,9 @@ function Write-NUnitTestCaseAttributes {
             $XmlWriter.WriteAttributeString('result', 'Inconclusive')
             $XmlWriter.WriteAttributeString('executed', 'True')
 
-            $result = Get-ErrorForXmlReport -TestResult $TestResult
-            if ($result.FailureMessage -match [regex]::Escape('Exception: is inconclusive,')) {
+            if ($TestResult.SkipBecause) {
                 $XmlWriter.WriteStartElement('reason')
-                $xmlWriter.WriteElementString('message', $result.FailureMessage)
+                $xmlWriter.WriteElementString('message', $TestResult.SkipBecause)
                 $XmlWriter.WriteEndElement() # Close reason tag
             }
 

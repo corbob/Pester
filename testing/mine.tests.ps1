@@ -2,7 +2,7 @@
 Describe 'All The Tests' {
 	Context 'Reasons' {
 		It 'Skips...' {
-			Set-ItResult -Skipped -Because 'I Told it to skip'
+			Set-ItResult -Skipped -Because 'I am skipped'
 		}
 		It 'Does not skip' {
 			$true | Should -BeTrue
@@ -14,6 +14,7 @@ Describe 'All The Tests' {
 			$true | Should -BeFalse -Because 'I am failed test'
 		}
 	}
+
 	Context 'No Reasons' {
 		It 'Skips...' {
 			Set-ItResult -Skipped
@@ -26,6 +27,42 @@ Describe 'All The Tests' {
 		}
 		It 'is Failed!' {
 			$true | Should -BeFalse
+		}
+	}
+
+	Context 'It Reasons' {
+		It 'Skips' -Skip -SkipBecause 'I am Skipped' {
+			$true | Should -BeTrue
+		}
+	}
+
+	Context 'It No Reasons' {
+		It 'Skips' -Skip {
+			$true | Should -BeTrue
+		}
+	}
+
+	Context 'Context Reasons' -Skip -SkipBecause 'I am Skipped' {
+		It 'Skips' {
+			$true | Should -BeTrue
+		}
+	}
+
+	Context 'Context No Reasons' -Skip {
+		It 'Skips' {
+			$true | Should -BeTrue
+		}
+	}
+
+	Describe 'Describe Reasons' -Skip -SkipBecause 'I am Skipped' {
+		It 'Skips' {
+			$true | Should -BeTrue
+		}
+	}
+
+	Describe 'Describe No Reasons' -Skip {
+		It 'Skips' {
+			$true | Should -BeTrue
 		}
 	}
 }
